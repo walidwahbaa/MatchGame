@@ -15,6 +15,7 @@
 		1B1F508F2AF00BC6008C0B62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B1F508D2AF00BC6008C0B62 /* LaunchScreen.storyboard */; };
 		1B1F50992AF1028A008C0B62 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1F50982AF1028A008C0B62 /* CardModel.swift */; };
 		1B1F509B2AF1036F008C0B62 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1F509A2AF1036E008C0B62 /* Card.swift */; };
+		1B98F0182B073F6200B8DB4E /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B98F0172B073F6200B8DB4E /* CardCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		1B1F50902AF00BC6008C0B62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B1F50982AF1028A008C0B62 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
 		1B1F509A2AF1036E008C0B62 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		1B98F0172B073F6200B8DB4E /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				1B1F50842AF00BC5008C0B62 /* SceneDelegate.swift */,
 				1B1F50862AF00BC5008C0B62 /* ViewController.swift */,
 				1B1F50982AF1028A008C0B62 /* CardModel.swift */,
+				1B98F0172B073F6200B8DB4E /* CardCollectionViewCell.swift */,
 				1B1F509A2AF1036E008C0B62 /* Card.swift */,
 				1B1F50882AF00BC5008C0B62 /* Main.storyboard */,
 				1B1F508B2AF00BC6008C0B62 /* Assets.xcassets */,
@@ -148,6 +151,7 @@
 				1B1F50992AF1028A008C0B62 /* CardModel.swift in Sources */,
 				1B1F509B2AF1036F008C0B62 /* Card.swift in Sources */,
 				1B1F50832AF00BC5008C0B62 /* AppDelegate.swift in Sources */,
+				1B98F0182B073F6200B8DB4E /* CardCollectionViewCell.swift in Sources */,
 				1B1F50852AF00BC5008C0B62 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
