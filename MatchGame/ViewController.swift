@@ -14,6 +14,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
     
     var model = CardModel()
     var cardsArray = [Card]()
+    var firstFlippedCardIndex : IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,12 +50,67 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         
         
         //Get a refrence to the cell that was tapped
-       let cell =  collectionView.cellForItem(at: indexPath) as? CardCollectionViewCell
+        let cell =  collectionView.cellForItem(at: indexPath) as? CardCollectionViewCell
         
         //check the status of the card is flipped or not and do the oppesite
-        (cell?.card?.isFlipped == true) ? cell?.flipDown() : cell?.flipUp()
-   
+        if(cell?.card?.isFlipped == false && cell?.card?.isMatched == false ){
+            
+            //flip the card up
+            cell?.flipUp()
+            
+            //check if the this is the first card that was flipped or the second card
+            if firstFlippedCardIndex == nil {
+                firstFlippedCardIndex = indexPath
+            }
+            else {
+                // second card is flipped
+                
+                // Run the comparition logic
+                checkForMatch(indexPath)
+                
+                
+            }
+            
+            
+        }
     }
     
+    //MARK: Game Logic Methods
+    
+    func checkForMatch(_ secondFlippedCardIndex : IndexPath ) {
+        
+        //Get the two card objects for the two indicies and see if they match
+        let cardOne = cardsArray[firstFlippedCardIndex!.row]
+        let cardTwo = cardsArray[secondFlippedCardIndex.row]
+        
+        //get the two collection view cells that have been flipped over
+        let cardOneCell = collectionView.cellForItem(at: firstFlippedCardIndex!) as? CardCollectionViewCell
+        let cardTwoCell = collectionView.cellForItem(at: secondFlippedCardIndex) as? CardCollectionViewCell
+        
+        
+        //compare the two cards
+        if (cardOne.imageName == cardTwo.imageName){
+            //it's a match
+            
+            cardOne.isMatched = true
+            
+            cardTwo.isMatched = true
+            
+            cardOneCell?.remove()
+            cardTwoCell?.remove()
+            
+        }
+        else {
+            //it is not a match
+            
+            // flip them over
+            cardOneCell?.flipDown()
+            cardOneCell?.flipDown()
+            cardTwoCell?.flipDown()
+        }
+        
+        //reset the first flipped card index
+        firstFlippedCardIndex = nil
+    }
 }
 

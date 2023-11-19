@@ -24,7 +24,7 @@ class CardCollectionViewCell: UICollectionViewCell {
         
         //reset the state of the cell by checking the flip status of the card and then showing the front or the back accordiningly
         
-        card.isFlipped ? flipUp(speed: 0) : flipDown(speed: 0)
+        card.isFlipped ? flipUp(speed: 0) : flipDown(speed: 0 , delay: 0)
     }
     
     func flipUp(speed : TimeInterval = 0.3) {
@@ -36,13 +36,28 @@ class CardCollectionViewCell: UICollectionViewCell {
         card?.isFlipped = true
     }
     
-    func flipDown(speed : TimeInterval = 0.3) {
+    func flipDown(speed : TimeInterval = 0.3 , delay : TimeInterval = 0.5) {
         
-        //Flip down animation
-        UIView.transition(from: frontImageView, to: backImageView, duration: speed , options: [.showHideTransitionViews , .transitionFlipFromLeft] , completion: nil)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delay, execute: {
+            
+            //Flip down animation
+            UIView.transition(from: self.frontImageView, to: self.backImageView, duration: speed , options: [.showHideTransitionViews , .transitionFlipFromLeft], completion: nil)
+            
+        })
         
         //reset the status of the flipping card
         card?.isFlipped = false
     }
-
+    func remove (){
+        
+        //Make the image views invisible
+        backImageView.alpha = 0  
+        
+        UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseOut, animations: {
+            // it takes whatever the value outside the animation block to the value inside here
+            self.frontImageView.alpha = 0
+            
+        },completion: nil)
+    }
+    
 }
