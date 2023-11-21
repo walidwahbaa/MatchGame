@@ -22,6 +22,16 @@ class CardCollectionViewCell: UICollectionViewCell {
         //Set the front image view to the image that represente the card
         frontImageView.image = UIImage(named: card.imageName)
         
+        if card.isMatched == true {
+            backImageView.alpha = 0
+            frontImageView.alpha = 0
+            return
+        }
+        else {
+            backImageView.alpha = 1
+            frontImageView.alpha = 1
+        }
+        
         //reset the state of the cell by checking the flip status of the card and then showing the front or the back accordiningly
         
         card.isFlipped ? flipUp(speed: 0) : flipDown(speed: 0 , delay: 0)
