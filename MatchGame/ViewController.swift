@@ -39,12 +39,20 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         
         // deque doesnot know the data type of the cell he is returning so we need to cast that object and say that it is a card collection view cell
         
-        // TODO: configre it
-        cell.configureCell(card: cardsArray[indexPath.row])
-        
         // Return it
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)  {
+        
+        // Configuire the state of the cell based on the properties of the card
+        
+        //casting the cell to be a card collection view cell
+        let cardCell = cell as? CardCollectionViewCell
+        // TODO: configre it
+        cardCell?.configureCell(card: cardsArray[indexPath.row])
+        
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -104,7 +112,6 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             //it is not a match
             
             // flip them over
-            cardOneCell?.flipDown()
             cardOneCell?.flipDown()
             cardTwoCell?.flipDown()
         }
