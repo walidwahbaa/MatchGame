@@ -12,9 +12,14 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var TimerLabel: UILabel!
     var model = CardModel()
     var cardsArray = [Card]()
+    
+    var timer : Timer?
+    var milliseconds : Int = 10 * 1000
     var firstFlippedCardIndex : IndexPath?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +29,32 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         //Set the ViewController as the dataSource & the delegete of the collection view
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+        //initilize the timer
+        timer = Timer.scheduledTimer(timeInterval: 1/1000, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
+        RunLoop.main.add(timer!, forMode: .common)
     }
+    //MARK: Timer Method
+    //exposing the swift method to the objective c tag
+    @objc func timerFired(){
+        //Decrement the counter
+        milliseconds -= 1
+        
+        // update the label
+        let seconds : Double = Double( milliseconds)/1000.0
+        TimerLabel.text = String(format: "Time Remaining %.2f", seconds)
+        
+        // stop the timer if it reaches zero
+        if milliseconds == 0 {
+            //stops the timer
+            TimerLabel.textColor = UIColor.red
+            timer?.invalidate()
+        }
+        
+        // check if the user has cleared all the pairs
+        checkForGameEnd()
+    }
+    
     //MARK: Collection View Delegete Methods
     //the collection view is asking the view controller how many items i should display
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -100,6 +130,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         if (cardOne.imageName == cardTwo.imageName){
             //it's a match
             
+            
             cardOne.isMatched = true
             
             cardTwo.isMatched = true
@@ -107,10 +138,14 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             cardOneCell?.remove()
             cardTwoCell?.remove()
             
+            //Was that the last pair ?
+            checkForGameEnd()
+            
         }
         else {
             //it is not a match
-            
+            cardOne.isFlipped = false
+            cardTwo.isFlipped = false
             // flip them over
             cardOneCell?.flipDown()
             cardTwoCell?.flipDown()
@@ -118,6 +153,42 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         
         //reset the first flipped card index
         firstFlippedCardIndex = nil
+    }
+    
+    
+    func checkForGameEnd (){
+        
+        //check if there any card that is un matched
+        var hasWon = true
+        
+        //assume the user won then lopp through all the card array to see of they all matched
+        for card in cardsArray {
+            if card.isMatched == false {
+                //we found a card that is not matched
+                hasWon = false
+                break
+            }
+        }
+        if hasWon {
+            //User has won , show an alert
+            showAlert(title: "Congratiolations!", message: "You won the game ! ")
+        }
+        else {
+            
+            //User hasn't win yet , check if there any time left
+            if milliseconds <= 0 {
+                showAlert(title: "Time's Up ", message: "Sorry ,better luck next time !")
+            }
+        }
+    }
+    func showAlert (title : String , message : String ){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        //Add a button for the user to dismiss it
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(okAction)
+        //present the message
+        present(alert, animated: true)
     }
 }
 
