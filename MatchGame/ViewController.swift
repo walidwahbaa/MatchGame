@@ -37,7 +37,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         //Add it to a seperated background loop so it doesn't interfer with the main loop of the collection view that is already running
         RunLoop.main.add(timer!, forMode: .common)
         
-
+        
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -98,6 +98,10 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        //Check if there is no time remaing don't make the user interact with the cards
+        if milliseconds <= 0 {
+            return
+        }
         
         //Get a refrence to the cell that was tapped
         let cell =  collectionView.cellForItem(at: indexPath) as? CardCollectionViewCell
@@ -110,7 +114,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             
             //Play flip Sound
             soundPlayer.playSound(effect: .flip)
-
+            
             
             //check if the this is the first card that was flipped or the second card
             if firstFlippedCardIndex == nil {
@@ -148,7 +152,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             
             //Play Match Sound
             soundPlayer.playSound(effect: .match)
-
+            
             
             cardOne.isMatched = true
             
@@ -166,7 +170,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             
             //Play not a match  Sound
             soundPlayer.playSound(effect: .noMatch)
-
+            
             cardOne.isFlipped = false
             cardTwo.isFlipped = false
             // flip them over
