@@ -19,6 +19,7 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
     var timer : Timer?
     var milliseconds : Int = 10 * 1000
     var firstFlippedCardIndex : IndexPath?
+    var soundPlayer = SoundManager()
     
     
     override func viewDidLoad() {
@@ -32,9 +33,20 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         
         //initilize the timer
         timer = Timer.scheduledTimer(timeInterval: 1/1000, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
+        
+        //Add it to a seperated background loop so it doesn't interfer with the main loop of the collection view that is already running
         RunLoop.main.add(timer!, forMode: .common)
+        
+
+        
     }
-    //MARK: Timer Method
+    override func viewDidAppear(_ animated: Bool) {
+        //Play shuffle Sound
+        soundPlayer.playSound(effect: .shuffle)
+    }
+    
+    
+    //MARK: - Timer Method
     //exposing the swift method to the objective c tag
     @objc func timerFired(){
         //Decrement the counter
@@ -96,6 +108,10 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
             //flip the card up
             cell?.flipUp()
             
+            //Play flip Sound
+            soundPlayer.playSound(effect: .flip)
+
+            
             //check if the this is the first card that was flipped or the second card
             if firstFlippedCardIndex == nil {
                 firstFlippedCardIndex = indexPath
@@ -130,6 +146,9 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         if (cardOne.imageName == cardTwo.imageName){
             //it's a match
             
+            //Play Match Sound
+            soundPlayer.playSound(effect: .match)
+
             
             cardOne.isMatched = true
             
@@ -144,6 +163,10 @@ class ViewController: UIViewController , UICollectionViewDataSource,UICollection
         }
         else {
             //it is not a match
+            
+            //Play not a match  Sound
+            soundPlayer.playSound(effect: .noMatch)
+
             cardOne.isFlipped = false
             cardTwo.isFlipped = false
             // flip them over
